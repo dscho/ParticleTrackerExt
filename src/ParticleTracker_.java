@@ -826,13 +826,13 @@ public class ParticleTracker_ implements PlugInFilter, Measurements, ActionListe
 	 */
 	public class MyFrame {
 
-		Particle[] particles;		// an array Particle, holds all the particles detected in this frame
+		public Particle[] particles;		// an array Particle, holds all the particles detected in this frame
 									// after particle discrimination holds only the "real" particles
 
-		int particles_number;		// number of particles initialy detected
-		int real_particles_number;	// number of "real" particles discrimination
-		int frame_number;			// Serial number of this frame in the movie (can be 0)
-		StringBuffer info_before_discrimination;// holdes string with ready to print info
+		public int particles_number;		// number of particles initialy detected
+		public int real_particles_number;	// number of "real" particles discrimination
+		public int frame_number;			// Serial number of this frame in the movie (can be 0)
+		public StringBuffer info_before_discrimination;// holdes string with ready to print info
 												// about this frame before particle discrimination
 
 
@@ -1557,6 +1557,42 @@ public class ParticleTracker_ implements PlugInFilter, Measurements, ActionListe
 			}
 			return ip;
 		}
+	}
+
+	public void analyze(int linkrange, double displacement) {
+		this.linkrange = linkrange;
+		this.displacement = displacement;
+		linkParticles();
+		generateTrajectories();
+	}
+
+	public void addFrame(float[] x, float[] y) {
+		int frame_num = frames == null ? 1 : frames.length + 1;
+		MyFrame[] newFrames = new MyFrame[frame_num];
+		if (frame_num > 1)
+			System.arraycopy(frames, 0, newFrames, 0, frame_num - 1);
+		newFrames[frame_num - 1] = createFrame(x, y, frame_num);
+		frames = newFrames;
+		frames_number = frames.length;
+	}
+
+	public MyFrame createFrame(float[] x, float[] y, int frame_num) {
+		MyFrame result = new MyFrame(null, frame_num);
+		result.particles = createParticles(x, y, frame_num);
+		result.particles_number = result.particles.length;
+		result.real_particles_number = result.particles.length;
+		return result;
+	}
+
+	public Particle[] createParticles(float[] x, float[] y, int frame_num) {
+		Particle[] result = new Particle[Math.min(x.length, y.length)];
+		for (int i = 0; i < result.length; i++)
+			result[i] = createParticle(x[i], y[i], frame_num);
+		return result;
+	}
+
+	public Particle createParticle(float x, float y, int frame_num) {
+		return new Particle(x, y, frame_num);
 	}
 
 	/**
@@ -2626,7 +2662,7 @@ public class ParticleTracker_ implements PlugInFilter, Measurements, ActionListe
 	 * avalible in each MyFrame and Particle.
 	 * <br>Populates the <code>all_traj</code> Vector.
 	 */
-	private void generateTrajectories() {
+	public void generateTrajectories() {
 
 		int i, j, k;
 		int found, n, m;
@@ -2817,7 +2853,6 @@ public class ParticleTracker_ implements PlugInFilter, Measurements, ActionListe
 		Object source = e.getSource();
 		if (source==preview) {
 			// set the original_imp window position next to the dialog window
-	        this.original_imp.getWindow().setLocation((int)gd.getLocationOnScreen().getX()+gd.getWidth(), (int)gd.getLocationOnScreen().getY());
 	        // do preview
 	        this.preview();
 			return;
