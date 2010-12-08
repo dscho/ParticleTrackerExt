@@ -506,12 +506,14 @@ public class ParticleTracker_ implements PlugInFilter, Measurements, ActionListe
 			int focus_y = Math.max((int)min_x - 8, 0);
 			int focus_height = (int)max_x - focus_y + 8;
 			int focus_width = (int)max_y - focus_x + 8;
-			// make sure that the -8 or +8 didnt create an ROI with bounds outside of the window
-			if (focus_x + focus_width > original_imp.getWidth()) {
-				focus_width = original_imp.getWidth() - focus_x;
-			}
-			if (focus_y + focus_height > original_imp.getHeight()) {
-				focus_height = original_imp.getHeight() - focus_y;
+			// make sure that the -8 or +8 didn't create an ROI with bounds outside of the window
+			if (original_imp != null) {
+				if (focus_x + focus_width > original_imp.getWidth()) {
+					focus_width = original_imp.getWidth() - focus_x;
+				}
+				if (focus_y + focus_height > original_imp.getHeight()) {
+					focus_height = original_imp.getHeight() - focus_y;
+				}
 			}
 			this.focus_area = new Roi(focus_x, focus_y, focus_width, focus_height);
 		}
