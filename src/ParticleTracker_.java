@@ -444,7 +444,7 @@ public class ParticleTracker_ implements PlugInFilter, Measurements, ActionListe
 	 */
 	public class Trajectory {
 
-		Particle[] existing_particles;		// holds all particles of this trajetory in order
+		public Particle[] existing_particles;		// holds all particles of this trajetory in order
 		int length; 						// number of frames this trajectory spans on
 
 		ArrayList<int[]> gaps = new ArrayList<int[]>(); 	// holds arrays (int[]) of size 2 that holds
@@ -1605,19 +1605,19 @@ public class ParticleTracker_ implements PlugInFilter, Measurements, ActionListe
 	 */
 	public class Particle {
 
-		float x, y; 					// the originally given coordinates - to be refined
-		float original_x , original_y; 	// the originally given coordinates - not to be changed
-		int frame; 						// the number of the frame this particle belonges to (can be 0)
-		boolean special; 				// a flag that is used while detecting and linking particles
-		int[] next; 					// array that holds in position i the particle number in frame i
+		public float x, y; 					// the originally given coordinates - to be refined
+		public float original_x , original_y; 	// the originally given coordinates - not to be changed
+		public int frame; 						// the number of the frame this particle belonges to (can be 0)
+		public boolean special; 				// a flag that is used while detecting and linking particles
+		public int[] next; 					// array that holds in position i the particle number in frame i
 										// that this particle is linked to
 
 		/* only relevant to particles detected in images */
-		float m0, m2; 					// zero and second order intensity moment
-		float score; 					// non-particle discrimination score
+		public float m0, m2; 					// zero and second order intensity moment
+		public float score; 					// non-particle discrimination score
 
 		/* only relevant to particles given as input */
-		String[] all_params; 			// all params that relate to this particle,
+		public String[] all_params; 			// all params that relate to this particle,
 										// 1st 2 should be x and y respectfully
 
 		/**
